@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<head>
+<link href="./ext-3.3.0/resources/css/ext-all.css" rel="stylesheet" type="text/css" />
+<script src="./ext-3.3.0/adapter/ext/ext-base.js" type="text/javascript"></script>
+<script src="./ext-3.3.0/ext-all.js" type="text/javascript"></script>
+<script type="text/javascript">
+   Ext.onReady(function(){
+                var navHandler = function(direction){
+                    var wizard = Ext.getCmp('wizard').layout;
+                    var prev = Ext.getCmp('move-prev');
+                    var next = Ext.getCmp('move-next');
+                    var activeId = wizard.activeItem.id;
+
+                    if(activeId == 'card-0'){
+                        if(direction == 1){
+                            var itemList=Ext.getCmp('card-0').items.items.filter(item=>item.checked);
+                            console.log(itemList2);
+                            if(itemList==''){
+                                Ext.MessageBox.alert("请选择一个值");
+                            }
+                            Ext.getCmp('answer1').setValue(itemList[0].boxLabel);
+                            wizard.setActiveItem(1);
+                            prev.setDisabled(false);
+                        }
+                    }else if(activeId == 'card-1'){
+                        if(direction == -1){
+                            wizard.setActiveItem(0);
+                            prev.setDisabled(true);
+                        }else{
+                            var itemList2=Ext.getCmp('card-1').items.items.filter(item=>item.checked);
+                            console.log(itemList2);
+                            if(itemList2==''){
+                                Ext.MessageBox.alert("请选择一个或多个值");
+                            }
+                            var result='';
+                            itemList2.forEach(element => {
+                                result+=element.boxLabel
+                            });
+                            //for(var i=0;i<itemList2.length;i++){
+                                console.log(result.boxLabel);
+                               Ext.getCmp('answer2').setValue(result);
+                            //}
+                            wizard.setActiveItem(2);
+                            next.setDisabled(true);
+                        }
+                    }else if(activeId == 'card-2'){
+                        if(direction == -1){
+                            wizard.setActiveItem(1);
+                            next.setDisabled(false);
+                        }
+                    }
+                }              
+                var panel = new Ext.Panel({
+                    id: 'wizard',
+                    renderTo: 'test',
+                    layout:'card',
+                    activeItem:0,
+                    width: 500,
+                    height:500,
+                    bodyStyle:'padding:15px',
+                    defaults:{
+                        border:false
+                    },
+                    bbar:[{
+                        id: 'move-prev',
+                        text: '上一步',
+                        handler: navHandler.createDelegate(this, [-1]),
+                        disabled: true
+                    },'->',{
+                        id:'move-next',
+                        text: '下一步',
+                        handler: navHandler.createDelegate(this,[1]),
+                       
+                    }],
+                    items: [{
+                        id: 'card-0',
+                        xtype:'fieldset',
+                        title:'Q1:番茄酱属于以下哪种垃圾？（单选）',
+                        defaultType:'radio',
+                      
+                        items:[{
+                           boxLabel:'湿垃圾',name:'garbage',inputValue:'garbage1'
+                        },{
+                           boxLabel:'干垃圾',name:'garbage',inputValue:'garbage2'
+                        },{
+                            boxLabel:'有害垃圾',name:'garbage',inputValue:'garbage3'
+                        },{
+                            boxLabel:'可回收物',name:'garbage',inputValue:'garbage4'
+                        }
+                    ]},{
+                        id: 'card-1',
+                        xtype:'fieldset',
+                        title:'Q50：王大叔出门遛狗后，哪些是正确处理狗粑粑的方法？（多选）',
+                        defaultType:'checkbox',
+                        items:[{
+                            boxLabel:'把粑粑用废报纸包好带回家冲掉',inputValue:'checkbox1' 
+                        },{
+                            boxLabel:'受污染的报纸按有害垃圾处理',inputValue:'checkbox2'
+                        },{
+                            boxLabel:'没受污染的报纸按可回收垃圾处理',inputValue:'checkbox3'
+                        },{
+                            boxLabel:'受污染的报纸浸水后当湿垃圾处理',inputValue:'checkbox4'
+                        }]
+                        
+                    },{
+                        id: 'card-2',
+                        xtype:'form',
+                        frame:true,
+                        title:'Answer',
+                        autoScroll :true,
+                        defaultType:'textfield',
+                        width:500,
+                        items:[{
+                           id:'answer1',
+                            width:200,
+                           fieldLabel:'Answer1',
+                          
+                        },{
+                            
+                           id:'answer2',
+                           xtype: 'textarea',
+                           width:200,
+                           fieldLabel:'Answer2',                      
+                        }],
+                       buttons:[{
+                       text:'submit',
+                       id:'btn',
+                       listeners:{
+                       'click':function(){
+                        Ext.MessageBox.alert('Msg','Congratulation!')
+                        }
+                       }
+                       }]
+                    }]
+                });
+            });
+
+ 
+</script>
+<style>
+    #btn{
+        margin-right: 250px;
+        margin-bottom: 260px;
+    }
+</style>
+</head>
+<body>
+   <div id='test'>
+            
+   </div>
+</body>
+</html>
